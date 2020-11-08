@@ -1,0 +1,64 @@
+From: Jose Angel Pastrana Padilla <japp0005@red.ujaen.es
+Subject: replacing content instead of renaming resolv.conf file
+Index: ike/source/iked/ike.socket.cpp
+===================================================================
+--- ike.orig/source/iked/ike.socket.cpp
++++ ike/source/iked/ike.socket.cpp
+@@ -860,13 +860,47 @@ bool _IKED::client_net_revert( IDB_TUNNE
+ 	return true;
+ }
+ 
++int copy_contents(const char* input, const char* output) {
++	FILE *fptr1, *fptr2;
++	char c;
++
++	// Open one file for reading
++	fptr1 = fopen(input, "r");
++	if (fptr1 == NULL)
++	{
++		printf("Cannot open file %s \n", input);
++		return -1;
++	}
++
++	// Open another file for writing
++	fptr2 = fopen(output, "w+");
++	if (fptr2 == NULL)
++	{
++		printf("Cannot open file %s \n", output);
++		return -1;
++	}
++
++	// Read contents from file
++	c = fgetc(fptr1);
++	while (c != EOF)
++	{
++		fputc(c, fptr2);
++		c = fgetc(fptr1);
++	}
++
++	fclose(fptr1);
++	fclose(fptr2);
++
++	return 0;
++}
++
+ bool _IKED::client_dns_config( IDB_TUNNEL * tunnel )
+ {
+ 	if( tunnel->xconf.opts & ( IPSEC_OPTS_DNSS | IPSEC_OPTS_DOMAIN ) )
+ 	{
+ 		// backup the current resolv.conf file
+ 
+-		rename( "/etc/resolv.conf", "/etc/resolv.iked" );
++		copy_contents( "/etc/resolv.conf", "/etc/resolv.iked" );
+ 
+ 		FILE * fp1 = fopen( "/etc/resolv.iked", "r" );
+ 		FILE * fp2 = fopen( "/etc/resolv.conf", "w+" );
+@@ -926,7 +960,7 @@ bool _IKED::client_dns_revert( IDB_TUNNE
+ 	{
+ 		// restore the previous resolv.conf file
+ 
+-		rename( "/etc/resolv.iked", "/etc/resolv.conf" );
++		copy_contents( "/etc/resolv.iked", "/etc/resolv.conf" );
+ 	}
+ 
+ 	return true;
