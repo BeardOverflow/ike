@@ -6,11 +6,11 @@ A collection of tools developed by Shrew Soft, Inc. to communicate with Open Sou
 
 **Disclaimer**: This image is not verified by, affiliated with, or supported by Shrew Soft, Inc.
 
-| Tool | Description |
-| - | - |
-| iked | Daemon which manages  tun interfaces (*the real vpn client*) |
-| ikec | Command-line client to talk to the daemon |
-| qikea | Graphical interface to talk to the daemon |
+| Tool | Description | Download |
+| - | - | - |
+| iked | Daemon which manages  tun interfaces (*the real vpn client*) | https://hub.docker.com/r/beardoverflow/ike |
+| ikec | Command-line client to talk to the daemon | https://hub.docker.com/r/beardoverflow/ike |
+| qikea | Graphical interface to talk to the daemon | https://flathub.org/apps/details/net.shrew.ike.qikea |
 
 ## What can I find here?
 
